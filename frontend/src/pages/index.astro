@@ -1,0 +1,78 @@
+---
+// Frontend page for trip countdown
+const pageTitle = "Cuenta Regresiva del Viaje";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{pageTitle}</title>
+    <link rel="stylesheet" href="/styles/global.css">
+</head>
+<body>
+    <main class="countdown-container">
+        <h1 class="countdown-title">¡Cuenta Regresiva para el Viaje!</h1>
+        
+        <div id="countdown-display" class="countdown-grid">
+            <div class="countdown-card">
+                <span class="countdown-number" id="days">0</span>
+                <span class="countdown-label">Días</span>
+            </div>
+            
+            <div class="countdown-card">
+                <span class="countdown-number" id="hours">0</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            
+            <div class="countdown-card">
+                <span class="countdown-number" id="minutes">0</span>
+                <span class="countdown-label">Minutos</span>
+            </div>
+            
+            <div class="countdown-card">
+                <span class="countdown-number" id="seconds">0</span>
+                <span class="countdown-label">Segundos</span>
+            </div>
+        </div>
+        
+        <div id="trip-message" class="trip-message hidden">
+            <h2>¡Viaja Seguro!</h2>
+        </div>
+    </main>
+
+    <script>
+        // Target date for the trip (modify this date as needed)
+        const tripDate = new Date('2024-12-25T00:00:00').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = tripDate - now;
+            
+            if (distance < 0) {
+                // Trip date has passed
+                document.getElementById('countdown-display').style.display = 'none';
+                document.getElementById('trip-message').classList.remove('hidden');
+                return;
+            }
+            
+            // Calculate time components
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Update DOM elements
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+        
+        // Update countdown immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html> 
