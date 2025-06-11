@@ -131,13 +131,15 @@ async function sendWhatsAppToRecipient(recipient, days, tripDescription) {
     // Frontend URL (GitHub Pages)
     const frontendUrl = 'https://khrizenriquez.github.io/trip-countdown-reminder';
     
-    // Use Twilio template with recipient's personal info + frontend URL
+    // Add URL to trip description (keeping original template structure)
+    const tripDescriptionWithUrl = `${tripDescription}\n\n🔗 Ver cuenta regresiva: ${frontendUrl}`;
+    
+    // Use Twilio template with existing 3 variables
     const templateSid = TEMPLATE_ID;
     const contentVariables = JSON.stringify({
       "1": recipient.name, // nombre del destinatario
       "2": days.toString(), // días restantes
-      "3": tripDescription, // descripción de la fecha
-      "4": frontendUrl // URL del frontend
+      "3": tripDescriptionWithUrl // descripción + URL
     });
     
     const messageResponse = await client.messages.create({
