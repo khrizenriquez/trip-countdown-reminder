@@ -103,11 +103,26 @@ async function sendReminderMessage() {
   const results = [];
   
   for (const recipient of recipients) {
-    // Extract name from phone number or use generic name
-    const name = recipient.replace('whatsapp:+502', '').slice(0, 4) || 'Amigo';
+    let name, phoneNumber;
+    
+    // Handle both string and object formats
+    if (typeof recipient === 'string') {
+      // Format: "whatsapp:+502123456"
+      phoneNumber = recipient;
+      name = recipient.replace('whatsapp:+502', '').slice(0, 4) || 'Amigo';
+    } else if (typeof recipient === 'object' && recipient.phone) {
+      // Format: {"name":"Juan","phone":"whatsapp:+502123456"}
+      phoneNumber = recipient.phone;
+      name = recipient.name || 'Amigo';
+    } else {
+      console.error(`❌ Invalid recipient format:`, recipient);
+      continue;
+    }
+    
+    console.log(`📱 Sending to: ${name} (${phoneNumber})`);
     
     const result = await sendWhatsAppMessage(
-      recipient,
+      phoneNumber,
       name,
       days,
       TRIP_DESCRIPTION
