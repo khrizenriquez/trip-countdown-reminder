@@ -11,6 +11,9 @@ const TRIP_DATE = process.env.TRIP_DATE;
 const TRIP_DESCRIPTION = process.env.TRIP_DESCRIPTION || 'Viaje';
 const TZ = process.env.TZ || 'America/Guatemala';
 
+// Track last sent date to prevent multiple executions per day
+let lastSentDate = null;
+
 console.log('🚀 Starting WhatsApp bot...');
 console.log(`📅 Trip date: ${TRIP_DATE}`);
 console.log(`🌎 Timezone: ${TZ}`);
@@ -91,9 +94,18 @@ function calculateDaysRemaining() {
 
 // Main reminder function
 async function sendReminderMessage() {
+  // Check if we already sent messages today
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  
+  if (lastSentDate === today) {
+    console.log(`📅 Messages already sent today (${today}). Skipping execution.`);
+    return;
+  }
+  
   const days = calculateDaysRemaining();
   
   console.log('📨 Sending daily reminders...');
+  console.log(`📅 Today: ${today}`);
   console.log(`📊 Days remaining: ${days}`);
   
   if (days === 0) {
@@ -101,6 +113,7 @@ async function sendReminderMessage() {
   }
   
   const results = [];
+  let anySuccessful = false;
   
   for (const recipient of recipients) {
     let name, phoneNumber;
@@ -135,6 +148,11 @@ async function sendReminderMessage() {
     
     results.push(result);
     
+    // Track if any message was successful
+    if (result.success) {
+      anySuccessful = true;
+    }
+    
     // Small delay between messages
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
@@ -143,6 +161,15 @@ async function sendReminderMessage() {
   const failed = results.filter(r => !r.success).length;
   
   console.log(`📊 Summary: ${successful} sent, ${failed} failed`);
+  
+  // Only update lastSentDate if at least one message was successful
+  // This prevents marking the day as "sent" when hitting daily limits
+  if (anySuccessful) {
+    lastSentDate = today;
+    console.log(`✅ Daily messages completed for ${today}`);
+  } else {
+    console.log(`⚠️ No messages sent successfully. Will retry in next execution.`);
+  }
 }
 
 // Send immediate message on deploy (for testing)
