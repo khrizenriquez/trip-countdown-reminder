@@ -1,7 +1,5 @@
 ---
 // Frontend page for trip countdown
-import Layout from '../layouts/Layout.astro';
-import Countdown from '../components/Countdown.astro';
 import config from '../config.js';
 
 // Extract trip configuration
@@ -23,12 +21,6 @@ const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 // Check if we're in development mode (Astro way)
 const isDevelopment = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
 ---
-
-<Layout title="🧳 Trip Countdown Reminder">
-	<main>
-		<Countdown />
-	</main>
-</Layout>
 
 <!DOCTYPE html>
 <html lang="es" class="dark">
