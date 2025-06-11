@@ -146,12 +146,15 @@ async function sendReminderMessage() {
 }
 
 // Send immediate message on deploy (for testing)
-console.log('🧪 Sending immediate test message...');
-sendReminderMessage().then(() => {
-  console.log('✅ Test message completed');
-}).catch(error => {
-  console.error('❌ Test message failed:', error);
-});
+// COMMENTED OUT to avoid wasting daily message limits
+// console.log('🧪 Sending immediate test message...');
+// sendReminderMessage().then(() => {
+//   console.log('✅ Test message completed');
+// }).catch(error => {
+//   console.error('❌ Test message failed:', error);
+// });
+
+console.log('🧪 Immediate test message disabled to preserve daily limits');
 
 // Schedule daily cron job at 5:55 AM Guatemala time
 console.log('⏰ Setting up daily cron job (5:55 AM Guatemala)...');
