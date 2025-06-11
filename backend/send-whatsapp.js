@@ -111,12 +111,17 @@ async function sendReminderMessage() {
       phoneNumber = recipient;
       name = recipient.replace('whatsapp:+502', '').slice(0, 4) || 'Amigo';
     } else if (typeof recipient === 'object' && recipient.phone) {
-      // Format: {"name":"Juan","phone":"whatsapp:+502123456"}
+      // Format: {"name":"Chris","phone":"+50254775800"}
       phoneNumber = recipient.phone;
       name = recipient.name || 'Amigo';
     } else {
       console.error(`❌ Invalid recipient format:`, recipient);
       continue;
+    }
+    
+    // Ensure phone number has whatsapp: prefix for Twilio
+    if (!phoneNumber.startsWith('whatsapp:')) {
+      phoneNumber = `whatsapp:${phoneNumber}`;
     }
     
     console.log(`📱 Sending to: ${name} (${phoneNumber})`);
