@@ -385,10 +385,43 @@ async function main() {
       });
       
     } else {
-      // Production mode: send WhatsApp and exit
-      await sendCountdownWhatsApp();
+      // Production mode: send once immediately, then setup cron
+      console.log('🚀 Modo producción: Enviando mensaje inicial...');
+      
+      // Send message immediately on deploy
+      try {
+        await sendCountdownWhatsApp();
+        console.log('✅ Mensaje inicial enviado correctamente');
+      } catch (error) {
+        console.error('❌ Error en envío inicial:', error.message);
+      }
+      
       console.log('');
-      console.log('🎉 Proceso completado exitosamente');
+      console.log('⏰ Configurando cron job para envíos diarios...');
+      console.log('📅 Programado para ejecutarse diariamente a las 5:55 AM (Guatemala)');
+      
+      // Import cron for scheduling
+      const cron = await import('node-cron');
+      
+      // Schedule job to run daily at 5:55 AM Guatemala time (America/Guatemala)
+      cron.default.schedule('55 5 * * *', async () => {
+        console.log('\n⏰ Ejecutando envío programado...');
+        console.log(`📅 ${new Date().toLocaleString('es-GT', { timeZone: 'America/Guatemala' })}`);
+        
+        try {
+          await sendCountdownWhatsApp();
+          console.log('✅ Envío programado completado exitosamente\n');
+        } catch (error) {
+          console.error('❌ Error en envío programado:', error.message);
+        }
+      }, {
+        scheduled: true,
+        timezone: "America/Guatemala"
+      });
+      
+      console.log('✅ Cron job configurado correctamente');
+      console.log('💡 El bot enviará mensajes diariamente a las 5:55 AM');
+      console.log('🔄 Proceso activo, esperando próxima ejecución programada...\n');
     }
     
   } catch (error) {
