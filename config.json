@@ -1,0 +1,12 @@
+{
+  "messages": {
+    "countdown": "¡Faltan {days} días para el viaje! 🗓️✈️",
+    "hours": "¡Faltan {hours} horas para el viaje! ⏰✈️",
+    "today": "¡El viaje es hoy! 🎉✈️",
+    "safe_travel": "¡Viaja seguro! 🎉✈️"
+  },
+  "frontend": {
+    "title": "¡Cuenta Regresiva para el Viaje!",
+    "safe_travel_message": "¡Viaja Seguro!"
+  }
+} 

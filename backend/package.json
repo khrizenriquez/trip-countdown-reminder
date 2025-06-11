@@ -1,0 +1,17 @@
+{
+  "name": "trip-countdown-backend",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "send-whatsapp.js",
+  "scripts": {
+    "start": "node send-whatsapp.js",
+    "dev": "node send-whatsapp.js"
+  },
+  "dependencies": {
+    "twilio": "^4.19.0",
+    "dotenv": "^16.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

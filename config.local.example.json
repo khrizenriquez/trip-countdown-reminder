@@ -1,0 +1,30 @@
+{
+  "trip": {
+    "date": "2025-06-26T09:40:00",
+    "timezone": "America/Guatemala",
+    "description": "Vuelo - Jueves 26 de junio de 2025 a las 9:40 AM"
+  },
+  "messages": {
+    "countdown_days": "¡Faltan {{1}} días para el viaje! 🧳✈️",
+    "countdown_hours": "¡Faltan {{1}} horas para el viaje! ⏰🧳",
+    "countdown_minutes": "¡Faltan {{1}} minutos para el viaje! ⏰🚨",
+    "countdown_today": "¡HOY es el día del viaje! 🎉🧳✈️",
+    "countdown_overdue": "El viaje ya pasó hace {{1}} días 📅",
+    "whatsapp_sent": "WhatsApp enviado correctamente",
+    "whatsapp_error": "Error enviando WhatsApp"
+  },
+  "frontend": {
+    "title": "¡Cuenta Regresiva para el Viaje!",
+    "safe_travel_message": "¡Viaja Seguro!"
+  },
+  "whatsapp": {
+    "template_id": "HXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "recipients": [
+      {
+        "name": "TuNombre",
+        "lastName": "TuApellido",
+        "phone": "+502XXXXXXXX"
+      }
+    ]
+  }
+} 
