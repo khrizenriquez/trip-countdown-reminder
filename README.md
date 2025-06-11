@@ -1,408 +1,187 @@
-# Trip Countdown Reminder
+# 🧳 Trip Countdown Reminder
 
-Un proyecto completo que combina un frontend estático con cuenta regresiva y un bot de WhatsApp que envía recordatorios diarios sobre un viaje próximo.
+Sistema automatizado de recordatorios de viaje que envía mensajes diarios por WhatsApp con cuenta regresiva hasta la fecha del viaje, con interfaz web moderna para visualización en tiempo real.
 
-## 📋 Descripción
+## ✨ Características
 
-Este proyecto consta de dos componentes principales:
+- 🤖 **Bot automatizado**: Envía recordatorios diarios por WhatsApp usando Twilio
+- 🌐 **Frontend moderno**: Interfaz web responsiva con cuenta regresiva en tiempo real  
+- ☁️ **Despliegue en Railway**: Backend automático con cron jobs
+- 📱 **GitHub Pages**: Frontend estático desplegado automáticamente
+- 🎨 **Modo oscuro/claro**: Tema adaptable con animaciones suaves
+- 🔒 **Seguro**: Variables de entorno para credenciales sensibles
 
-1. **Frontend (Astro)**: Una aplicación web estática que muestra una cuenta regresiva hacia la fecha de un viaje en tiempo real
-2. **Backend (Bot WhatsApp)**: Un servicio Node.js que envía mensajes WhatsApp diarios vía Twilio recordando cuántos días faltan para el viaje
+## 🚀 Demo en Vivo
 
-Cuando la cuenta regresiva llega a cero, el frontend muestra "¡Viaja Seguro!" y el bot envía un mensaje de despedida.
+- **Frontend**: [https://khrizenriquez.github.io/trip-countdown-reminder](https://khrizenriquez.github.io/trip-countdown-reminder)
+- **Bot WhatsApp**: Envía mensajes automáticos diarios a las 5:55 AM (GMT-6)
 
-## ⚡ Inicio rápido
+## ⚡ Inicio Rápido
 
-```bash
-# 1. Clonar el proyecto
-git clone https://github.com/tu-usuario/trip-countdown-reminder.git
-cd trip-countdown-reminder
+### 1. Configuración del Bot de WhatsApp
 
-# 2. Configurar Twilio WhatsApp (ver env.example)
-cp env.example .env
-nano .env
+1. **Crear cuenta en Twilio**:
+   - Regístrate en [Twilio](https://www.twilio.com)
+   - Configura WhatsApp Sandbox o cuenta verificada
+   - Crea un template de mensaje aprobado
 
-# 3. ¡UN SOLO COMANDO PARA TODO!
-./run-trip-countdown.sh
-
-# 4. Configurar WhatsApp (después del paso 3)
-./run-backend.sh
-```
-
-**🎯 Resultado**: Frontend en http://localhost:8080 + Backend WhatsApp listo para Twilio
-
-## 🚀 Características
-
-- ✅ **Frontend ultra moderno** con Astro y Tailwind CSS
-- ✅ **Diseño circular atractivo** similar a la imagen de referencia
-- ✅ **Modo oscuro/claro** con toggle automático
-- ✅ **Mobile First** completamente responsivo
-- ✅ **Animaciones suaves** y efectos visuales modernos
-- ✅ **Gradientes dinámicos** con patrones de fondo animados
-- ✅ **Tipografía Inter** para mejor legibilidad
-- ✅ **Bot WhatsApp con Twilio** - Más barato y confiable que SMS
-- ✅ **Múltiples destinatarios** - Envía a varios números a la vez
-- ✅ **Sin QR codes** - API oficial de Twilio, sin whatsapp-web.js
-- ✅ **Sandbox gratuito** para pruebas + números Business para producción
-- ✅ Contenerización con Podman para recursos mínimos
-- ✅ Cron job automatizado para envío diario de mensajes
-- ✅ Despliegue optimizado para DigitalOcean
-
-## 🚀 Scripts de automatización
-
-Este proyecto incluye scripts que automatizan todo el proceso de construcción y despliegue:
-
-### 📋 **Scripts disponibles**
-
-| Script | Descripción | Cuándo usar |
-|--------|-------------|-------------|
-| `./run-trip-countdown.sh` | 🚀 **PRINCIPAL** - Construye y ejecuta todo el proyecto | **Usar siempre** para despliegue completo |
-| `./run-backend.sh` | Ejecuta solo el backend con opciones | Configurar WhatsApp o pruebas del bot |
-| `./stop-trip-countdown.sh` | Para y limpia todo el proyecto | Parar todos los servicios |
-
-### 🎯 **Script principal recomendado**
-
-```bash
-# Un solo comando para todo el proyecto
-./run-trip-countdown.sh
-```
-
-**Este script hace todo automáticamente:**
-- ✅ Limpia contenedores e imágenes anteriores
-- ✅ Construye frontend (~51MB) y backend (~200MB)
-- ✅ Ejecuta el frontend en http://localhost:8080
-- ✅ Deja el backend listo para configurar WhatsApp
-- ✅ Verifica que todo funcione correctamente
-
-## 📦 Requisitos
-
-- **Servidor**: Droplet de DigitalOcean (mínimo 1GB RAM, 1 CPU)
-- **Container Runtime**: Podman
-- **Twilio**: Cuenta con WhatsApp (sandbox gratis o número Business)
-
-## 🛠️ Instalación en DigitalOcean
-
-### Método rápido (recomendado)
-
-```bash
-# 1. Clonar el proyecto
-git clone https://github.com/tu-usuario/trip-countdown-reminder.git
-cd trip-countdown-reminder
-
-# 2. Configurar variables (opcional, ver env.example)
-cp env.example .env
-nano .env
-
-# 3. ¡Un solo comando para todo!
-./run-trip-countdown.sh
-```
-
-### Método manual (paso a paso)
-
-### 1. Preparar el servidor
-
-```bash
-# Actualizar el sistema
-sudo apt update && sudo apt upgrade -y
-
-# Instalar Podman
-sudo apt install -y podman podman-compose
-
-# Verificar instalación
-podman --version
-```
-
-### 2. Configurar usuario (opcional)
-
-```bash
-# Crear usuario para deploy
-sudo adduser deployuser
-
-# Agregar a grupo podman
-sudo usermod -aG podman deployuser
-
-# Cambiar a usuario deploy
-su - deployuser
-```
-
-### 3. Clonar el proyecto
-
-```bash
-git clone https://github.com/tu-usuario/trip-countdown-reminder.git
-cd trip-countdown-reminder
-```
-
-### 4. Configurar variables de entorno
-
-```bash
-# Usar el archivo de ejemplo como plantilla
-cp env.example .env
-
-# Editar con tus valores reales
-nano .env
-```
-
-**📄 Archivo `env.example`**: Este archivo contiene todas las variables necesarias con documentación detallada sobre cómo configurar Twilio WhatsApp, incluido el sandbox gratuito.
-
-### 5. Construir los contenedores
-
-```bash
-# Con el script principal (recomendado)
-./run-trip-countdown.sh
-
-# O manualmente
-podman build -t trip-frontend frontend/
-podman build -f backend/Dockerfile -t trip-backend .
-```
-
-### 6. Configurar WhatsApp Bot
-
-Después de ejecutar `./run-trip-countdown.sh`, configura el bot:
-
-```bash
-# Opción 1: Script interactivo (recomendado)
-./run-backend.sh
-
-# Opción 2: Comando directo con variables de entorno
-podman run --rm -it --name trip-backend \
-  -e TWILIO_ACCOUNT_SID="ACxxx..." \
-  -e TWILIO_AUTH_TOKEN="tu_auth_token" \
-  -e TWILIO_WHATSAPP_NUMBER="+14155238886" \
-  -e RECIPIENT_PHONE_NUMBERS="+502XXXXXXXX,+502YYYYYYYY" \
-  -e TZ="America/Guatemala" \
-  trip-backend node send-whatsapp.js
-```
-
-### 7. Ejecutar backend en producción
-
-Una vez configurado Twilio, ejecuta el backend con cron automático:
-
-```bash
-# Con el script
-./run-backend.sh
-# Selecciona opción 2 (Automático con cron)
-
-# O comando directo
-podman run -d --name trip-backend \
-  -e TWILIO_ACCOUNT_SID="ACxxx..." \
-  -e TWILIO_AUTH_TOKEN="tu_auth_token" \
-  -e TWILIO_WHATSAPP_NUMBER="+14155238886" \
-  -e RECIPIENT_PHONE_NUMBERS="+502XXXXXXXX,+502YYYYYYYY" \
-  -e TZ="America/Guatemala" \
-  trip-backend
-```
-
-## 🚀 Despliegue en Producción
-
-### **Estrategia recomendada**: Frontend + Backend separados
-
-1. **🌐 Frontend**: GitHub Pages (gratuito, estático)
-2. **🖥️ Backend**: DigitalOcean/Railway/Render (bot WhatsApp con cron)
-
-### **🌐 Frontend en GitHub Pages**
-
-#### 1. Configurar astro.config.mjs
-
-```bash
-# Edita frontend/astro.config.mjs
-const GITHUB_USERNAME = 'tu-usuario';        # ← Cambia esto
-const REPO_NAME = 'trip-countdown-reminder';  # ← Cambia esto
-```
-
-#### 2. Habilitar GitHub Pages
-
-1. Ve a tu repositorio en GitHub
-2. **Settings** → **Pages**
-3. Source: **GitHub Actions**
-4. ¡Listo! Cada push a `main` despliega automáticamente
-
-**🎯 Resultado**: Tu frontend estará en `https://tu-usuario.github.io/trip-countdown-reminder`
-
-### **🖥️ Backend en DigitalOcean** (Recomendado)
-
-#### Método súper fácil:
-
-```bash
-# 1. Crear droplet Ubuntu en DigitalOcean ($4-6/mes)
-# 2. Conectar vía SSH
-# 3. Instalar Podman:
-sudo apt update && sudo apt install -y podman git
-
-# 4. Clonar y desplegar:
-git clone https://github.com/tu-usuario/trip-countdown-reminder.git
-cd trip-countdown-reminder
-./deploy-production.sh  # ← Script automático completo
-```
-
-**✨ El script automático hace todo:**
-- ✅ Construye la imagen optimizada
-- ✅ Configura variables de entorno
-- ✅ Ejecuta con límites de recursos
-- ✅ Configura cron automático
-- ✅ Verifica que todo funcione
-
-### **🚂 Backend en Railway** (Muy fácil)
-
-1. **Conectar repositorio**: https://railway.app → New Project → GitHub
-2. **Variables de entorno**:
-   ```
-   TWILIO_ACCOUNT_SID=ACxxx...
-   TWILIO_AUTH_TOKEN=tu_token
-   TWILIO_WHATSAPP_NUMBER=+14155238886
+2. **Configurar variables en Railway**:
+   ```bash
+   TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   WHATSAPP_TEMPLATE_ID=HXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   WHATSAPP_RECIPIENTS=["whatsapp:+502xxxxxxxx","whatsapp:+502xxxxxxxx"]
+   TRIP_DATE=2024-12-15T06:00:00.000Z
+   TRIP_DESCRIPTION=Viaje a Europa
    TZ=America/Guatemala
-   NODE_ENV=production
    ```
-3. **¡Deploy automático!** Railway detecta el `railway.json` y despliega
 
-### **🎨 Backend en Render**
+3. **Desplegar en Railway**:
+   - Conecta tu repositorio de GitHub
+   - Railway detectará automáticamente el backend Node.js
+   - Las variables se configuran en el dashboard de Railway
 
-1. **Nuevo Web Service**: https://render.com → New → Web Service
-2. **Repositorio**: Conecta tu GitHub
-3. **Build Command**: `cd backend && npm install`
-4. **Start Command**: `node send-whatsapp.js`
-5. **Variables de entorno**: Mismas que Railway
+### 2. Configuración del Frontend
 
-### **⚡ Despliegue rápido con Railway**
+1. **GitHub Pages se despliega automáticamente** desde la rama `main`
+2. **Personalizar configuración** en `frontend/src/config.js`:
+   ```javascript
+   export default {
+     trip: {
+       date: new Date('2024-12-15T06:00:00.000Z').getTime(),
+       description: 'Viaje a Europa 🇪🇺'
+     },
+     frontend: {
+       title: '🧳 Trip Countdown',
+       safe_travel_message: '¡Buen Viaje!'
+     }
+   };
+   ```
 
-Ya que elegiste Railway, el proceso es súper sencillo:
+## 📋 Requisitos Previos
 
-```bash
-# 1. Frontend (GitHub Pages)
-git push origin main  # Auto-deploy activado
+- **Cuenta Twilio**: Para envío de mensajes WhatsApp
+- **Cuenta Railway**: Para hosting del backend
+- **Cuenta GitHub**: Para hosting del frontend con GitHub Pages
 
-# 2. Backend (Railway)
-# → Conectar repo en Railway
-# → Agregar variables de entorno
-# → ¡Deploy automático!
+## 🏗️ Arquitectura
+
+```
+trip-countdown-reminder/
+├── backend/          # Bot de WhatsApp (Node.js + Railway)
+│   ├── send-whatsapp.js
+│   ├── package.json
+│   └── .env.example
+├── frontend/         # Interfaz web (Astro + GitHub Pages)
+│   ├── src/
+│   │   ├── pages/
+│   │   ├── components/
+│   │   ├── styles/
+│   │   └── config.js
+│   └── package.json
+└── .github/workflows/ # CI/CD para GitHub Pages
 ```
 
-### **🔧 Comandos útiles para Railway**
+## 🛠️ Scripts Disponibles
 
+### Backend
 ```bash
-# Ver logs en tiempo real (desde tu terminal local)
-railway logs
-
-# Deploy manual (si es necesario)
-git push origin main
-
-# Conectar a Railway CLI (opcional)
-railway login
-railway link
+npm install          # Instalar dependencias
+npm start           # Ejecutar bot (Railway)
 ```
 
-**💡 Nota importante**: Con Railway no necesitas configurar servidores, contenedores ni SSH. Todo es automático.
-
-## 🔧 Comandos útiles
-
-### Scripts de automatización (recomendados)
-
+### Frontend
 ```bash
-# Construir y ejecutar todo el proyecto
-./run-trip-countdown.sh
-
-# Configurar solo el backend WhatsApp
-./run-backend.sh
-
-# Parar y limpiar todo
-./stop-trip-countdown.sh
+npm install          # Instalar dependencias
+npm run dev         # Servidor desarrollo (localhost:4321)
+npm run build       # Build para producción
+npm run preview     # Preview del build
 ```
 
-### Gestión manual de contenedores
+## 🔧 Configuración Avanzada
 
-```bash
-# Ver logs del frontend
-podman logs -f trip-frontend
-
-# Ver logs del backend
-podman logs -f trip-backend
-
-# Ver contenedores ejecutándose
-podman ps
-
-# Parar contenedores específicos
-podman stop trip-frontend trip-backend
-
-# Eliminar contenedores específicos
-podman rm trip-frontend trip-backend
+### Template de WhatsApp
+El mensaje debe tener exactamente 3 variables:
+```
+¡Hola {{1}}! ¡Faltan {{2}} días para {{3}}! 🧳✈️
 ```
 
-## ⚙️ Configuración
+### Cron Schedule
+```javascript
+// Envío diario a las 5:55 AM Guatemala
+cron.schedule('55 5 * * *', sendReminderMessage, {
+  scheduled: true,
+  timezone: process.env.TZ || 'America/Guatemala'
+});
+```
 
-### Variables de entorno requeridas
+### Variables de Entorno
+```bash
+# Backend (.env)
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  
+WHATSAPP_TEMPLATE_ID=HXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+WHATSAPP_RECIPIENTS=["whatsapp:+502xxxxxxxx"]
+TRIP_DATE=2024-12-15T06:00:00.000Z
+TRIP_DESCRIPTION=Viaje a Europa
+TZ=America/Guatemala
+```
 
-| Variable | Descripción | Ejemplo |
-|----------|-------------|---------|
-| `TWILIO_ACCOUNT_SID` | Account SID de Twilio | `AC1234567890abcdef...` |
-| `TWILIO_AUTH_TOKEN` | Auth Token de Twilio | `abcdef1234567890...` |
-| `TWILIO_WHATSAPP_NUMBER` | Número WhatsApp de Twilio | `+14155238886` (sandbox) |
-| `TZ` | Zona horaria | `America/Guatemala` |
+## 📱 Uso
 
-### Configuración de destinatarios
+1. **Configurar fecha del viaje** en `config.js` y variables de entorno
+2. **Deploy automático**: Push a `main` despliega ambos servicios
+3. **Mensajes automáticos**: Bot envía recordatorios diarios
+4. **Ver countdown**: Visita el sitio web para cuenta regresiva visual
 
-Los destinatarios ahora se configuran en `config.json` para mayor personalización:
+## 🎨 Personalización
 
-```json
-{
-  "whatsapp": {
-    "template_id": "HXxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "recipients": [
-      {
-        "name": "Persona1",
-        "lastName": "Apellido1",
-        "phone": "+502XXXXXXXX"
-      },
-      {
-        "name": "Persona2", 
-        "lastName": "Apellido2",
-        "phone": "+502YYYYYYYY"
-      },
-      {
-        "name": "Persona3",
-        "lastName": "Apellido3", 
-        "phone": "+502ZZZZZZZZ"
-      }
-    ]
-  }
+### Colores y Tema
+Edita `frontend/src/styles/global.css`:
+```css
+:root {
+  --primary-orange: #f97316;
+  --bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-dark: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
 }
 ```
 
-**✨ Ventajas del nuevo sistema:**
-- 🏷️ **Mensajes personalizados** con nombre de cada destinatario
-- 📋 **Organización mejorada** vs variables de entorno
-- 🔧 **Fácil mantenimiento** sin redeployar contenedores
-- 📱 **Templates Twilio** con variables personalizadas
-
-### Configurar cuenta de Twilio WhatsApp
-
-#### Para pruebas (Sandbox gratuito)
-1. **Crear cuenta**: https://www.twilio.com/try-twilio
-2. **Acceder al sandbox**: Console > Messaging > Try it out > Send a WhatsApp message
-3. **Copiar credenciales**: Account SID y Auth Token
-4. **Número sandbox**: `+1 415 523 8886`
-5. **Unir destinatarios**: Los números deben enviar `join <codigo>` al sandbox
-
-#### Para producción (WhatsApp Business)
-1. **Solicitar número**: Console > Phone Numbers > WhatsApp senders
-2. **Verificación de Facebook**: Requiere aprobación de Meta
-3. **Configurar perfil**: Nombre, foto, descripción del negocio
-4. **Templates**: Crear plantillas de mensaje aprobadas
-
-### Modificar fecha del viaje
-
-Para cambiar la fecha del viaje, edita el archivo `config.json` en la raíz del proyecto:
-
-```json
-{
-  "trip": {
-    "date": "2025-06-26T09:40:00",
-    "timezone": "America/Guatemala",
-    "description": "Vuelo - Jueves 26 de junio de 2025 a las 9:40 AM"
-  }
-}
+### Mensaje de WhatsApp  
+Personaliza en las variables de entorno:
+```bash
+TRIP_DESCRIPTION="Viaje familiar a Disney 🏰"
 ```
 
-**Importante**: Este archivo centraliza la configuración para ambos componentes (frontend y backend). Solo necesitas modificar la fecha aquí y ambos proyectos se actualizarán automáticamente.
+## 🔍 Troubleshooting
 
-### Personalizar mensajes
+### GitHub Pages 404
+1. Ve a Settings → Pages
+2. Source: **GitHub Actions**
+3. Asegúrate que el repo sea **público**
 
-También puedes personalizar los mensajes del bot editando la sección `
+### Mensajes no llegan
+1. Verifica credenciales Twilio
+2. Confirma que el template esté **aprobado**
+3. Revisa logs en Railway dashboard
+
+### Frontend no actualiza
+1. Verifica que el workflow de GitHub Actions se ejecute
+2. Limpia cache del navegador
+3. Confirma que `config.js` tenga la fecha correcta
+
+## 📄 Licencia
+
+MIT License - ve [LICENSE](LICENSE) para detalles.
+
+## 🤝 Contribuciones
+
+¡Las contribuciones son bienvenidas! Por favor:
+1. Fork del proyecto
+2. Crea una rama feature (`git checkout -b feature/nueva-caracteristica`)
+3. Commit tus cambios (`git commit -m 'feat: nueva característica'`)
+4. Push a la rama (`git push origin feature/nueva-caracteristica`)
+5. Abre un Pull Request
+
+---
+
+> 💡 **Tip**: Este proyecto usa [Conventional Commits](https://www.conventionalcommits.org/) para mantener un historial limpio y versionado automático.
