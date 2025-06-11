@@ -1,0 +1,25 @@
+{
+  "name": "trip-countdown-reminder",
+  "version": "0.3.0",
+  "private": true,
+  "scripts": {
+    "build": "./run-trip-countdown.sh",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && NODE_ENV=development node send-whatsapp.js --dev",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "start": "./run-trip-countdown.sh",
+    "stop": "./stop-trip-countdown.sh",
+    "test:whatsapp": "cd backend && node --env-file=../.env send-whatsapp.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "description": "Cuenta regresiva para viaje con frontend moderno y bot WhatsApp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tu-usuario/trip-countdown-reminder.git"
+  },
+  "keywords": ["countdown", "trip", "whatsapp", "astro", "twilio"],
+  "author": "Tu Nombre",
+  "license": "MIT"
+} 

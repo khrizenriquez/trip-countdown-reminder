@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles for better font rendering */
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .countdown-circle {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .countdown-circle:hover {
+    transform: scale(1.05);
+  }
+  
+  .countdown-number {
+    transition: transform 0.15s ease-in-out;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .bg-dots-pattern {
+    background-size: 20px 20px;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+} 
