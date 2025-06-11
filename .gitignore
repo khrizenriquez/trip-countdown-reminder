@@ -89,6 +89,7 @@ temp/
 
 # Astro specific
 .astro/
+frontend/src/env.d.ts
 
 # Personal configuration backups
 **/credentials/
