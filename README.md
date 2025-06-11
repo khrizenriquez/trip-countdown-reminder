@@ -254,8 +254,6 @@ cd trip-countdown-reminder
    ```
 3. **¡Deploy automático!** Railway detecta el `railway.json` y despliega
 
-**💰 Costo**: ~$5 USD/mes + recursos
-
 ### **🎨 Backend en Render**
 
 1. **Nuevo Web Service**: https://render.com → New → Web Service
@@ -264,69 +262,35 @@ cd trip-countdown-reminder
 4. **Start Command**: `node send-whatsapp.js`
 5. **Variables de entorno**: Mismas que Railway
 
-**💰 Costo**: ~$7 USD/mes
+### **⚡ Despliegue rápido con Railway**
 
-### **📋 Comparación de opciones de backend**
-
-| Opción | Costo/mes | Facilidad | Cron | Control | Recomendado para |
-|--------|-----------|-----------|------|---------|------------------|
-| **DigitalOcean** | $4-6 | ⭐⭐⭐ | ✅ | ⭐⭐⭐ | Desarrolladores |
-| **Railway** | $5+ | ⭐⭐⭐⭐⭐ | ✅ | ⭐⭐⭐ | Principiantes |
-| **Render** | $7+ | ⭐⭐⭐⭐ | ✅ | ⭐⭐⭐ | Empresas |
-| VPS (Linode) | $3-5 | ⭐⭐ | ✅ | ⭐⭐⭐⭐⭐ | Expertos |
-
-### **⚡ Despliegue rápido completo**
+Ya que elegiste Railway, el proceso es súper sencillo:
 
 ```bash
 # 1. Frontend (GitHub Pages)
 git push origin main  # Auto-deploy activado
 
-# 2. Backend (DigitalOcean)
-ssh user@tu-droplet
-git clone https://github.com/tu-usuario/trip-countdown-reminder.git
-cd trip-countdown-reminder
-./deploy-production.sh
-
-# ¡Listo en 5 minutos!
+# 2. Backend (Railway)
+# → Conectar repo en Railway
+# → Agregar variables de entorno
+# → ¡Deploy automático!
 ```
 
-### **🔧 Comandos de mantenimiento en producción**
+### **🔧 Comandos útiles para Railway**
 
 ```bash
-# Ver logs del backend
-podman logs -f trip-backend-prod
+# Ver logs en tiempo real (desde tu terminal local)
+railway logs
 
-# Estado del contenedor
-podman ps
+# Deploy manual (si es necesario)
+git push origin main
 
-# Prueba manual de envío
-podman exec trip-backend-prod node send-whatsapp.js
-
-# Reiniciar bot
-podman restart trip-backend-prod
-
-# Actualizar código
-git pull
-podman build -f backend/Dockerfile -t trip-backend-prod .
-podman stop trip-backend-prod && podman rm trip-backend-prod
-# Ejecutar deploy-production.sh nuevamente
+# Conectar a Railway CLI (opcional)
+railway login
+railway link
 ```
 
-### **🔒 Seguridad en producción**
-
-```bash
-# Configurar firewall básico
-sudo ufw allow 22/tcp    # SSH
-sudo ufw enable
-
-# Actualizar sistema regularmente
-sudo apt update && sudo apt upgrade -y
-
-# Verificar logs periódicamente
-podman logs trip-backend-prod | tail -50
-```
-
-**💡 Nota importante**: El backend NO necesita puerto HTTP público. Solo ejecuta cron jobs internos.
+**💡 Nota importante**: Con Railway no necesitas configurar servidores, contenedores ni SSH. Todo es automático.
 
 ## 🔧 Comandos útiles
 
@@ -441,155 +405,4 @@ Para cambiar la fecha del viaje, edita el archivo `config.json` en la raíz del 
 
 ### Personalizar mensajes
 
-También puedes personalizar los mensajes del bot editando la sección `messages` en `config.json`:
-
-```json
-{
-  "messages": {
-    "countdown": "¡Faltan {days} días para el viaje! 🗓️✈️",
-    "hours": "¡Faltan {hours} horas para el viaje! ⏰✈️",
-    "today": "¡El viaje es hoy! 🎉✈️",
-    "safe_travel": "¡Viaja seguro! 🎉✈️"
-  }
-}
-```
-
-## 💰 Costos de WhatsApp
-
-### Twilio WhatsApp Pricing (aproximado)
-- **Mensajes WhatsApp**: $0.005 USD por mensaje (33% más barato que SMS)
-- **Conversaciones**: Primeras 1,000 gratis/mes
-- **Número Business**: Requiere aprobación (gratuito)
-- **Cuentas trial**: $15.50 USD de crédito gratis
-
-### Ejemplo de costos mensuales
-- 1 WhatsApp diario × 30 días = $0.15 USD
-- Sin costo de número Business
-- **Total**: ~$0.15 USD/mes por destinatario (vs $1.25 USD con SMS)
-
-### Comparación con alternativas
-| Método | Costo/mensaje | QR Code | Confiabilidad | Configuración |
-|--------|---------------|---------|---------------|---------------|
-| **Twilio WhatsApp** | $0.005 | ❌ | ⭐⭐⭐⭐⭐ | Fácil |
-| Twilio SMS | $0.0075 | ❌ | ⭐⭐⭐⭐⭐ | Fácil |
-| whatsapp-web.js | Gratis | ✅ | ⭐⭐ | Compleja |
-
-## 🔒 Firewall y Seguridad
-
-```bash
-# Configurar firewall UFW
-sudo ufw allow 22/tcp  # SSH
-sudo ufw allow 80/tcp  # HTTP
-sudo ufw enable
-```
-
-## 📊 Límites de recursos
-
-### Límites optimizados (sin Chromium)
-- **Frontend**: Memoria: 100MB, CPU: 0.2 cores
-- **Backend**: Memoria: 150MB, CPU: 0.2 cores
-- **Total**: ~250MB RAM (vs 600MB con whatsapp-web.js)
-
-Ideal para droplets de 512MB - 1GB RAM.
-
-## 🐛 Solución de problemas
-
-### Error de configuración Twilio
-
-```bash
-# Verificar credenciales
-podman exec trip-backend node -e "
-const twilio = require('twilio');
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-client.api.accounts(process.env.TWILIO_ACCOUNT_SID).fetch().then(account => console.log('✅', account.friendlyName));
-"
-```
-
-### WhatsApp no se entregan
-
-```bash
-# Ver logs detallados
-podman logs -f trip-backend
-
-# Verificar formato de números (+código_país)
-# Para sandbox: Verificar que destinatarios estén unidos
-# Para producción: Verificar templates aprobados
-```
-
-### Sandbox: Destinatarios no reciben mensajes
-
-1. **Unirse al sandbox**: Enviar `join <codigo>` al +1 415 523 8886
-2. **Verificar código**: Cada cuenta tiene un código único
-3. **Formato correcto**: Números con +código_país
-
-### El cron no se ejecuta
-
-```bash
-# Verificar zona horaria
-podman exec trip-backend date
-
-# Ver configuración de cron
-podman exec trip-backend cat /etc/crontabs/root
-
-# Envío manual de prueba
-podman exec trip-backend node send-whatsapp.js
-```
-
-### Frontend no se ve
-
-```bash
-# Verificar puerto
-curl -I http://localhost:8080
-
-# Verificar logs de nginx
-podman logs trip-frontend
-```
-
-## 📁 Estructura del proyecto
-
-```
-trip-countdown-reminder/
-├── config.json                  # ✨ Configuración centralizada
-├── env.example                  # 📄 Variables de entorno (Twilio WhatsApp)
-├── frontend/                    # Aplicación Astro
-│   ├── src/
-│   │   ├── config.js           # Carga configuración compartida
-│   │   ├── pages/index.astro   # Página principal con Tailwind
-│   │   └── styles/global.css   # Estilos Tailwind personalizados
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── astro.config.mjs
-│   └── tailwind.config.mjs     # Configuración de Tailwind
-├── backend/                     # Bot WhatsApp
-│   ├── send-whatsapp.js        # 💬 Lógica de envío WhatsApp (Twilio)
-│   ├── Dockerfile              # 🚀 Optimizado sin Chromium
-│   └── package.json
-├── run-trip-countdown.sh        # 🚀 Script principal
-├── run-backend.sh              # 💬 Script para WhatsApp
-├── stop-trip-countdown.sh      # 🛑 Script de limpieza
-├── .gitignore
-└── README.md
-```
-
-## 🏷️ Versionado
-
-Este proyecto usa [Semantic Versioning](https://semver.org/).
-
-- **v0.1.0**: Versión inicial con whatsapp-web.js
-- **v0.2.0**: Migración a Twilio SMS + Frontend moderno
-- **v0.3.0**: Migración a Twilio WhatsApp (más económico y confiable)
-
-## 📞 Soporte
-
-Si encuentras problemas:
-
-1. **Configuración**: Revisa las variables de entorno de Twilio
-2. **Sandbox**: Verifica que los destinatarios estén unidos al sandbox
-3. **Números**: Confirma que tengan formato +código_país
-4. **Saldo**: Verifica el saldo en tu cuenta Twilio
-5. **Logs**: Revisa los logs de los contenedores
-6. **Firewall**: Asegúrate de que el firewall permita el tráfico HTTP
-
----
-
-**¡Disfruta tu viaje!** ✈️🎉
+También puedes personalizar los mensajes del bot editando la sección `
