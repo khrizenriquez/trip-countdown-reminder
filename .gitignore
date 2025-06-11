@@ -19,6 +19,16 @@ build/
 .env.production
 .env.staging
 
+# Production environment files with real data
+env.production
+.env.production.local
+.env.staging.local
+
+# Configuration files with sensitive data
+config.local.json
+config.prod.json
+config.production.json
+
 # Session files
 **/session
 session/
@@ -78,4 +88,14 @@ temp/
 *.tar
 
 # Astro specific
-.astro/ 
+.astro/
+
+# Personal configuration backups
+**/credentials/
+credentials/
+secrets/
+private/
+
+# Additional configurations
+.env.production.local
+.env.staging.local 
