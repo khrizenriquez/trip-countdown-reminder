@@ -24,6 +24,12 @@ const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 const isDevelopment = Astro.url.hostname === 'localhost' || Astro.url.hostname === '127.0.0.1';
 ---
 
+<Layout title="🧳 Trip Countdown Reminder">
+	<main>
+		<Countdown />
+	</main>
+</Layout>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
