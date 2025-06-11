@@ -128,12 +128,16 @@ async function sendWhatsAppToRecipient(recipient, days, tripDescription) {
     const whatsappFrom = formatWhatsAppNumber(TWILIO_WHATSAPP_NUMBER);
     const whatsappTo = formatWhatsAppNumber(recipient.phone);
     
-    // Use Twilio template with recipient's personal info
+    // Frontend URL (GitHub Pages)
+    const frontendUrl = 'https://khrizenriquez.github.io/trip-countdown-reminder';
+    
+    // Use Twilio template with recipient's personal info + frontend URL
     const templateSid = TEMPLATE_ID;
     const contentVariables = JSON.stringify({
       "1": recipient.name, // nombre del destinatario
       "2": days.toString(), // días restantes
-      "3": tripDescription // descripción de la fecha
+      "3": tripDescription, // descripción de la fecha
+      "4": frontendUrl // URL del frontend
     });
     
     const messageResponse = await client.messages.create({
