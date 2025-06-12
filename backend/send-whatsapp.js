@@ -56,7 +56,7 @@ async function sendWhatsAppMessage(to, name, days, description) {
   try {
     // Frontend URL
     const frontendUrl = 'https://khrizenriquez.github.io/trip-countdown-reminder';
-    const descriptionWithUrl = `${description}\n\n🔗 Ver cuenta regresiva: ${frontendUrl}`;
+    const descriptionWithUrl = `${description} | Ver countdown: ${frontendUrl}`;
     
     const contentVariables = JSON.stringify({
       "1": name,
@@ -175,39 +175,24 @@ async function sendReminderMessage() {
 
 // Send immediate message on deploy (for testing)
 // Re-enabled for one final test to confirm the fix
-console.log('🧪 Sending immediate test message to confirm fix...');
-sendReminderMessage().then(() => {
-  console.log('✅ Test message completed');
-}).catch(error => {
-  console.error('❌ Test message failed:', error);
-});
-
-// Schedule daily cron job at 4:40 PM Guatemala time (GMT-6)
-// console.log('⏰ Setting up daily cron job (4:40 PM Guatemala)...');
-// cron.schedule('40 16 * * *', () => {
-//   console.log('⏰ Cron job triggered at 4:40 PM');
-//   sendReminderMessage();
-// }, {
-//   scheduled: true,
-//   timezone: TZ
+// console.log('🧪 Sending immediate test message to confirm fix...');
+// sendReminderMessage().then(() => {
+//   console.log('✅ Test message completed');
+// }).catch(error => {
+//   console.error('❌ Test message failed:', error);
 // });
 
 // Temporary cron jobs for multi-send testing
-console.log('⏰ Setting up test cron jobs for 5:20 PM, 5:25 PM, and 5:30 PM...');
-cron.schedule('20 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:20 PM');
+console.log('⏰ Setting up test cron jobs for 5:35 PM and 5:40 PM...');
+cron.schedule('35 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:35 PM');
   sendReminderMessage();
 }, { scheduled: true, timezone: TZ });
 
-cron.schedule('25 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:25 PM');
+cron.schedule('40 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:40 PM');
   sendReminderMessage();
 }, { scheduled: true, timezone: TZ });
 
-cron.schedule('30 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:30 PM');
-  sendReminderMessage();
-}, { scheduled: true, timezone: TZ });
-
-console.log('🤖 Bot is running. Test messages scheduled for 5:20 PM, 5:25 PM, and 5:30 PM.');
+console.log('🤖 Bot is running. Test messages scheduled for 5:35 PM and 5:40 PM.');
 console.log('📝 Press Ctrl+C to stop...'); 
