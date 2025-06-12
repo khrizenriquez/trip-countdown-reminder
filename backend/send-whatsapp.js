@@ -95,13 +95,13 @@ function calculateDaysRemaining() {
 
 // Main reminder function
 async function sendReminderMessage() {
-  // Check if we already sent messages today (TEMPORARILY DISABLED FOR TESTING)
+  // Check if we already sent messages today
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
   
-  // if (lastSentDate === today) {
-  //   console.log(`📅 Messages already sent today (${today}). Skipping execution.`);
-  //   return;
-  // }
+  if (lastSentDate === today) {
+    console.log(`📅 Messages already sent today (${today}). Skipping execution.`);
+    return;
+  }
   
   const days = calculateDaysRemaining();
   
@@ -163,36 +163,21 @@ async function sendReminderMessage() {
   
   console.log(`📊 Summary: ${successful} sent, ${failed} failed`);
   
-  // Only update lastSentDate if at least one message was successful (TEMPORARILY DISABLED FOR TESTING)
-  // This prevents marking the day as "sent" when hitting daily limits
-  // if (anySuccessful) {
-  //   lastSentDate = today;
-  //   console.log(`✅ Daily messages completed for ${today}`);
-  // } else {
-  //   console.log(`⚠️ No messages sent successfully. Will retry in next execution.`);
-  // }
+  // Only update lastSentDate if at least one message was successful
+  if (anySuccessful) {
+    lastSentDate = today;
+    console.log(`✅ Daily messages completed for ${today}`);
+  } else {
+    console.log(`⚠️ No messages sent successfully. Will retry in next execution.`);
+  }
 }
 
-// Send immediate message on deploy (for testing)
-// Re-enabled for one final test to confirm the fix
-// console.log('🧪 Sending immediate test message to confirm fix...');
-// sendReminderMessage().then(() => {
-//   console.log('✅ Test message completed');
-// }).catch(error => {
-//   console.error('❌ Test message failed:', error);
-// });
-
-// Temporary cron jobs for multi-send testing
-console.log('⏰ Setting up test cron jobs for 5:35 PM and 5:40 PM...');
-cron.schedule('35 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:35 PM');
+// Final cron job configuration
+console.log('⏰ Setting up daily cron job (5:48 PM Guatemala)...');
+cron.schedule('48 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:48 PM');
   sendReminderMessage();
 }, { scheduled: true, timezone: TZ });
 
-cron.schedule('40 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:40 PM');
-  sendReminderMessage();
-}, { scheduled: true, timezone: TZ });
-
-console.log('🤖 Bot is running. Test messages scheduled for 5:35 PM and 5:40 PM.');
+console.log('🤖 Bot is running. Daily messages scheduled for 5:48 PM Guatemala time.');
 console.log('📝 Press Ctrl+C to stop...'); 
