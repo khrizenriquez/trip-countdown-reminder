@@ -183,15 +183,15 @@ async function sendReminderMessage() {
 
 console.log('🧪 Immediate test message disabled to preserve daily limits');
 
-// Schedule daily cron job at 12:30 PM Guatemala time (GMT-6)
-console.log('⏰ Setting up daily cron job (12:30 PM Guatemala)...');
-cron.schedule('30 12 * * *', () => {
-  console.log('⏰ Cron job triggered at 12:30 PM');
+// Schedule daily cron job at 4:15 PM Guatemala time (GMT-6)
+console.log('⏰ Setting up daily cron job (4:15 PM Guatemala)...');
+cron.schedule('15 16 * * *', () => {
+  console.log('⏰ Cron job triggered at 4:15 PM');
   sendReminderMessage();
 }, {
   scheduled: true,
   timezone: TZ
 });
 
-console.log('🤖 Bot is running. Daily messages scheduled for 12:30 PM Guatemala time.');
+console.log('🤖 Bot is running. Daily messages scheduled for 4:15 PM Guatemala time.');
 console.log('📝 Press Ctrl+C to stop...'); 
