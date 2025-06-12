@@ -95,13 +95,13 @@ function calculateDaysRemaining() {
 
 // Main reminder function
 async function sendReminderMessage() {
-  // Check if we already sent messages today
+  // Check if we already sent messages today (TEMPORARILY DISABLED FOR TESTING)
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
   
-  if (lastSentDate === today) {
-    console.log(`📅 Messages already sent today (${today}). Skipping execution.`);
-    return;
-  }
+  // if (lastSentDate === today) {
+  //   console.log(`📅 Messages already sent today (${today}). Skipping execution.`);
+  //   return;
+  // }
   
   const days = calculateDaysRemaining();
   
@@ -163,14 +163,14 @@ async function sendReminderMessage() {
   
   console.log(`📊 Summary: ${successful} sent, ${failed} failed`);
   
-  // Only update lastSentDate if at least one message was successful
+  // Only update lastSentDate if at least one message was successful (TEMPORARILY DISABLED FOR TESTING)
   // This prevents marking the day as "sent" when hitting daily limits
-  if (anySuccessful) {
-    lastSentDate = today;
-    console.log(`✅ Daily messages completed for ${today}`);
-  } else {
-    console.log(`⚠️ No messages sent successfully. Will retry in next execution.`);
-  }
+  // if (anySuccessful) {
+  //   lastSentDate = today;
+  //   console.log(`✅ Daily messages completed for ${today}`);
+  // } else {
+  //   console.log(`⚠️ No messages sent successfully. Will retry in next execution.`);
+  // }
 }
 
 // Send immediate message on deploy (for testing)
@@ -192,17 +192,22 @@ sendReminderMessage().then(() => {
 //   timezone: TZ
 // });
 
-// Temporary cron jobs for testing
-console.log('⏰ Setting up test cron jobs for 5:10 PM and 5:12 PM...');
-cron.schedule('10 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:10 PM');
+// Temporary cron jobs for multi-send testing
+console.log('⏰ Setting up test cron jobs for 5:20 PM, 5:25 PM, and 5:30 PM...');
+cron.schedule('20 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:20 PM');
   sendReminderMessage();
 }, { scheduled: true, timezone: TZ });
 
-cron.schedule('12 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:12 PM');
+cron.schedule('25 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:25 PM');
   sendReminderMessage();
 }, { scheduled: true, timezone: TZ });
 
-console.log('🤖 Bot is running. Daily messages scheduled for 5:10 PM and 5:12 PM.');
+cron.schedule('30 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:30 PM');
+  sendReminderMessage();
+}, { scheduled: true, timezone: TZ });
+
+console.log('🤖 Bot is running. Test messages scheduled for 5:20 PM, 5:25 PM, and 5:30 PM.');
 console.log('📝 Press Ctrl+C to stop...'); 
