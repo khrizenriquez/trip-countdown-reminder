@@ -10,6 +10,7 @@ const WHATSAPP_RECIPIENTS = process.env.WHATSAPP_RECIPIENTS;
 const TRIP_DATE = process.env.TRIP_DATE;
 const TRIP_DESCRIPTION = process.env.TRIP_DESCRIPTION || 'Viaje';
 const TZ = process.env.TZ || 'America/Guatemala';
+const TWILIO_MESSAGING_SERVICE_SID = process.env.TWILIO_MESSAGING_SERVICE_SID;
 
 // Track last sent date to prevent multiple executions per day
 let lastSentDate = null;
@@ -23,7 +24,7 @@ console.log(`📝 Description: ${TRIP_DESCRIPTION}`);
 const requiredVars = {
   TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN,
-  TWILIO_WHATSAPP_NUMBER,
+  TWILIO_MESSAGING_SERVICE_SID,
   WHATSAPP_TEMPLATE_ID,
   WHATSAPP_RECIPIENTS,
   TRIP_DATE
@@ -64,7 +65,7 @@ async function sendWhatsAppMessage(to, name, days, description) {
     });
     
     const message = await client.messages.create({
-      from: `whatsapp:${TWILIO_WHATSAPP_NUMBER}`,
+      messagingServiceSid: TWILIO_MESSAGING_SERVICE_SID,
       to: to,
       contentSid: WHATSAPP_TEMPLATE_ID,
       contentVariables: contentVariables
@@ -192,16 +193,16 @@ sendReminderMessage().then(() => {
 // });
 
 // Temporary cron jobs for testing
-console.log('⏰ Setting up test cron jobs for 5:05 PM and 5:10 PM...');
-cron.schedule('5 17 * * *', () => {
-  console.log('⏰ Cron job triggered at 5:05 PM');
-  sendReminderMessage();
-}, { scheduled: true, timezone: TZ });
-
+console.log('⏰ Setting up test cron jobs for 5:10 PM and 5:12 PM...');
 cron.schedule('10 17 * * *', () => {
   console.log('⏰ Cron job triggered at 5:10 PM');
   sendReminderMessage();
 }, { scheduled: true, timezone: TZ });
 
-console.log('🤖 Bot is running. Daily messages scheduled for 5:05 PM and 5:10 PM.');
+cron.schedule('12 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:12 PM');
+  sendReminderMessage();
+}, { scheduled: true, timezone: TZ });
+
+console.log('🤖 Bot is running. Daily messages scheduled for 5:10 PM and 5:12 PM.');
 console.log('📝 Press Ctrl+C to stop...'); 
