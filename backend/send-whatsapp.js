@@ -182,14 +182,26 @@ sendReminderMessage().then(() => {
 });
 
 // Schedule daily cron job at 4:40 PM Guatemala time (GMT-6)
-console.log('⏰ Setting up daily cron job (4:40 PM Guatemala)...');
-cron.schedule('40 16 * * *', () => {
-  console.log('⏰ Cron job triggered at 4:40 PM');
-  sendReminderMessage();
-}, {
-  scheduled: true,
-  timezone: TZ
-});
+// console.log('⏰ Setting up daily cron job (4:40 PM Guatemala)...');
+// cron.schedule('40 16 * * *', () => {
+//   console.log('⏰ Cron job triggered at 4:40 PM');
+//   sendReminderMessage();
+// }, {
+//   scheduled: true,
+//   timezone: TZ
+// });
 
-console.log('🤖 Bot is running. Daily messages scheduled for 4:40 PM Guatemala time.');
+// Temporary cron jobs for testing
+console.log('⏰ Setting up test cron jobs for 5:05 PM and 5:10 PM...');
+cron.schedule('5 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:05 PM');
+  sendReminderMessage();
+}, { scheduled: true, timezone: TZ });
+
+cron.schedule('10 17 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:10 PM');
+  sendReminderMessage();
+}, { scheduled: true, timezone: TZ });
+
+console.log('🤖 Bot is running. Daily messages scheduled for 5:05 PM and 5:10 PM.');
 console.log('📝 Press Ctrl+C to stop...'); 
