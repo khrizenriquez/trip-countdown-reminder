@@ -10,6 +10,9 @@ const TRIP_DATE = process.env.TRIP_DATE;
 const TRIP_DESCRIPTION = process.env.TRIP_DESCRIPTION || 'Viaje';
 const TZ = process.env.TZ || 'America/Guatemala';
 
+// Track last sent date to prevent multiple executions per day
+let lastSentDate = null;
+
 console.log('🚀 Starting SMS Reminder Bot...');
 console.log(`📅 Trip date: ${TRIP_DATE}`);
 
@@ -70,24 +73,43 @@ async function sendSmsMessage(to, body) {
 
 // Main reminder function
 async function sendReminder() {
+  // Restore the once-per-day logic
+  const today = new Date().toISOString().split('T')[0];
+  if (lastSentDate === today) {
+    console.log(`📅 SMS for ${today} already sent. Skipping.`);
+    return;
+  }
+
   const days = calculateDaysRemaining();
   const frontendUrl = 'https://khrizenriquez.github.io/trip-countdown-reminder';
   const messageBody = `Hola! Faltan ${days} dias para nuestro viaje: ${TRIP_DESCRIPTION}. Ver countdown: ${frontendUrl}`;
 
-  console.log('📨 Sending SMS reminders...');
+  console.log('📨 Sending daily SMS reminders...');
   
+  let anySuccessful = false;
   for (const recipient of recipients) {
-    await sendSmsMessage(recipient, messageBody);
+    const result = await sendSmsMessage(recipient, messageBody);
+    if (result.success) {
+      anySuccessful = true;
+    }
     await new Promise(resolve => setTimeout(resolve, 1000)); // Delay
+  }
+
+  // Only lock for the day if at least one message was sent successfully
+  if (anySuccessful) {
+    lastSentDate = today;
+    console.log(`✅ Daily SMS reminders completed for ${today}.`);
+  } else {
+    console.log('⚠️ No SMS sent successfully. Will retry in the next scheduled execution.');
   }
 }
 
 // Schedule daily cron job
-console.log('⏰ Setting up daily cron job for 6:32 PM Guatemala...');
-cron.schedule('32 18 * * *', () => {
-  console.log('⏰ Cron job triggered at 6:32 PM');
+console.log('⏰ Setting up daily cron job for 6:36 PM Guatemala...');
+cron.schedule('36 18 * * *', () => {
+  console.log('⏰ Cron job triggered at 6:36 PM');
   sendReminder();
 }, { scheduled: true, timezone: TZ });
 
-console.log('🤖 Bot is running. Daily messages scheduled for 6:32 PM Guatemala time.');
+console.log('🤖 Bot is running. Daily messages scheduled for 6:36 PM Guatemala time.');
 console.log('📝 Press Ctrl+C to stop...'); 
