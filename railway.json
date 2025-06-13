@@ -5,7 +5,7 @@
     "dockerfilePath": "backend/Dockerfile"
   },
   "deploy": {
-    "startCommand": "node send-whatsapp.js",
+    "startCommand": "node send-sms.js",
     "restartPolicyType": "ALWAYS"
   }
 } 
