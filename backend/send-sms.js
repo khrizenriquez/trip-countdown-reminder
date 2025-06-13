@@ -105,11 +105,11 @@ async function sendReminder() {
 }
 
 // Schedule daily cron job
-console.log('⏰ Setting up daily cron job for 6:36 PM Guatemala...');
-cron.schedule('36 18 * * *', () => {
-  console.log('⏰ Cron job triggered at 6:36 PM');
+console.log('⏰ Setting up daily cron job for 5:55 AM Guatemala...');
+cron.schedule('55 5 * * *', () => {
+  console.log('⏰ Cron job triggered at 5:55 AM');
   sendReminder();
 }, { scheduled: true, timezone: TZ });
 
-console.log('🤖 Bot is running. Daily messages scheduled for 6:36 PM Guatemala time.');
+console.log('🤖 Bot is running. Daily messages scheduled for 5:55 AM Guatemala time.');
 console.log('📝 Press Ctrl+C to stop...'); 
