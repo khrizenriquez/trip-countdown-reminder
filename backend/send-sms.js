@@ -82,13 +82,20 @@ async function sendReminder() {
 
   const days = calculateDaysRemaining();
   const frontendUrl = 'https://khrizenriquez.github.io/trip-countdown-reminder';
-  const messageBody = `Hola! Faltan ${days} dias para nuestro viaje: ${TRIP_DESCRIPTION}. Ver countdown: ${frontendUrl}`;
 
-  console.log('📨 Sending daily SMS reminders...');
+  console.log('📨 Sending daily personalized SMS reminders...');
   
   let anySuccessful = false;
   for (const recipient of recipients) {
-    const result = await sendSmsMessage(recipient, messageBody);
+    // Validate that the recipient object has the required properties
+    if (typeof recipient !== 'object' || !recipient.phone || !recipient.name) {
+      console.error(`⚠️ Skipping invalid recipient. Must be an object with 'name' and 'phone' properties. Invalid value: ${JSON.stringify(recipient)}`);
+      continue; // Move to the next recipient
+    }
+
+    const messageBody = `Hola, ${recipient.name}! Faltan ${days} dias para nuestro viaje: ${TRIP_DESCRIPTION}. Ver countdown: ${frontendUrl}`;
+
+    const result = await sendSmsMessage(recipient.phone, messageBody);
     if (result.success) {
       anySuccessful = true;
     }
